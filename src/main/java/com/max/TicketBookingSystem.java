@@ -26,6 +26,18 @@ public class TicketBookingSystem {
         this.availableTickets = new AtomicInteger(ticketCount);
     }
 
+    public int getAvailableTickets() {
+        return availableTickets.get();
+    }
+
+    public int getSuccessfulBookings() {
+        return successfulBookings;
+    }
+
+    public int getFailedBookings() {
+        return failedBookings;
+    }
+
 
     public boolean bookTicket(String user) {
         synchronized (lock) {
@@ -41,6 +53,7 @@ public class TicketBookingSystem {
                 try {
                     waitingQueue.put(user);
                     waitingUsersCount++;
+                    failedBookings++;
                     log.info("Билетов нет: пользователь {} добавлен в очередь ожидания.", user);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
